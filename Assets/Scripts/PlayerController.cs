@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour {
     private Rigidbody rb;
     private bool isBroadcasting = false;
     private bool isDigging = false;
+    private bool falling = true;
 
     void Start () {
         rb = GetComponent<Rigidbody>();
@@ -43,6 +44,16 @@ public class PlayerController : MonoBehaviour {
 
         Vector3 movement = new Vector2 (moveHorizontal, 0.0f);
 
-        rb.AddForce (movement * speed);
+        // if (!falling) {
+            rb.AddForce (movement * speed);
+        // }
     }
+
+    // void OnCollisionExit () {
+    //     falling = true;
+    // }
+
+    // void OnCollisionEnter () {
+    //     falling = false;
+    // }
 }
