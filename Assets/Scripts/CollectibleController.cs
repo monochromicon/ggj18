@@ -5,12 +5,14 @@ using UnityEngine.UI;
 
 public class CollectibleController : MonoBehaviour {
 
+	public float distance = 70f;
 	private GameObject player;
 	private ParticleSystem collectibleSystem;
 	private bool collected;
 	private float pitch;
 	private AudioSource response;
 	private AudioClip responseClip;
+	private bool playing = false;
 
 	// Use this for initialization
 	void Start () {
@@ -19,12 +21,18 @@ public class CollectibleController : MonoBehaviour {
 		collectibleSystem = GetComponentInChildren<ParticleSystem>();
 		response = GetComponent<AudioSource>();
 		response.pitch = pitch;
+		response.spread = 1f;
+		response.spatialBlend = 1f;
+		response.rolloffMode = AudioRolloffMode.Linear;
+		response.maxDistance = distance;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		if (!collected && PlayerController.isBroadcasting) {
-			StartCoroutine(Respond());
+			if (!playing && Vector3.Distance(player.transform.position, transform.position) < distance) {
+				StartCoroutine(Respond());
+			}
 		}
 	}
 
@@ -40,7 +48,10 @@ public class CollectibleController : MonoBehaviour {
 	}
 
 	IEnumerator Respond () {
+		playing = true;
 		yield return new WaitForSeconds(1);
 		response.Play();
+		// yield return new WaitForSeconds(response.clip.length);
+		playing = false;
 	}
 }
