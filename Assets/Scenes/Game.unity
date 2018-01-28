@@ -1251,7 +1251,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 2.196216
+      value: 0.727413
       mode: 0
       spread: 0
       speed:
@@ -4244,7 +4244,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 1000094665
+  randomSeed: 532421622
   InitialModule:
     serializedVersion: 3
     enabled: 1
