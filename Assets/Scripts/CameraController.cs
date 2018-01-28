@@ -7,11 +7,15 @@ public class CameraController : MonoBehaviour {
     public bool cinematicMode = true;
     public GameObject player;
     public Text titleText;
-    public float fadeSpeed;
     private Vector3 offset;
 	private float initialY;
+    private AudioSource theme;
 
+    void Awake () {
+        Application.targetFrameRate = 20;
+    }
     void Start () {
+        theme = GetComponent<AudioSource>();
         if (cinematicMode) {
             StartCoroutine(Title());
         }
@@ -37,8 +41,9 @@ public class CameraController : MonoBehaviour {
     IEnumerator Title () {
         transform.position = new Vector3(player.transform.position.x, player.transform.position.y + 1, transform.position.z - player.transform.position.z);            
         offset = transform.position - player.transform.position;
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(5);
         cinematicMode = false;
+        theme.Play();
         StartCoroutine(FadeTextToZeroAlpha(1f, titleText));
     }
 

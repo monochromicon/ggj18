@@ -6,11 +6,14 @@ public class PlayerController : MonoBehaviour {
     public float speed;
     public ParticleSystem digSystem;
     public ParticleSystem broadcastSystem;
+    public AudioSource call;
+    public AudioSource dig;
+    public AudioSource move;
 
     private Rigidbody rb;
+    private bool isMoving = false;
     private bool isBroadcasting = false;
     private bool isDigging = false;
-    private bool falling = true;
 
     void Start () {
         rb = GetComponent<Rigidbody>();
@@ -23,6 +26,7 @@ public class PlayerController : MonoBehaviour {
         if (!isBroadcasting) {
             if (Input.GetKeyDown(KeyCode.UpArrow)) {
                 broadcastSystem.Play();
+                call.Play();
                 isBroadcasting = true;
             }
         }
@@ -30,8 +34,15 @@ public class PlayerController : MonoBehaviour {
         if (!isDigging) {
             if (Input.GetKeyDown(KeyCode.DownArrow)) {
                 digSystem.Play();
+                dig.Play();
                 isDigging = true;
             }
+        }
+
+        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow)) {
+            move.Play();
+        } else {
+            move.Stop();
         }
     }
 
@@ -44,9 +55,7 @@ public class PlayerController : MonoBehaviour {
 
         Vector3 movement = new Vector2 (moveHorizontal, 0.0f);
 
-        // if (!falling) {
-            rb.AddForce (movement * speed);
-        // }
+        rb.AddForce (movement * speed);
     }
 
     // void OnCollisionExit () {
