@@ -11,9 +11,9 @@ public class PlayerController : MonoBehaviour {
     public AudioSource move;
 
     private Rigidbody rb;
-    private bool isMoving = false;
-    private bool isBroadcasting = false;
-    private bool isDigging = false;
+    static public bool isBroadcasting = false;
+    static public bool isDigging = false;
+    static public int collected = 0;
 
     void Start () {
         rb = GetComponent<Rigidbody>();

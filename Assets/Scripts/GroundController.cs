@@ -5,8 +5,12 @@ using UnityEngine;
 public class GroundController : MonoBehaviour {
 
 	public int width;
+	public int angleRange = 45;
+	public float spawnRate = 1;
 	public Material platformMaterial;
-	
+	public ParticleSystem collectibleSystem;
+	public AudioClip responseClip;
+	public int collectibles;
 	private Vector3 lastJoint;
 
 	// Use this for initialization
@@ -37,8 +41,20 @@ public class GroundController : MonoBehaviour {
 			}
 			else {
 				parent.transform.position = lastJoint;
-				parent.transform.rotation = Quaternion.Euler(0, 0, Random.Range(45, 135));
+				parent.transform.rotation = Quaternion.Euler(0, 0, Random.Range(90 - angleRange, 90 + angleRange));
 				lastJoint = child.transform.position;
+			}
+
+			if (Random.value < spawnRate) {
+				ParticleSystem collectible = Instantiate(collectibleSystem);
+				collectible.transform.SetParent(platform.transform);
+				collectible.transform.position = platform.transform.position;
+				platform.AddComponent<CollectibleController>();
+				AudioSource platformAudio = platform.AddComponent<AudioSource>();
+				platformAudio.loop = false;
+				platformAudio.playOnAwake = false;
+				platformAudio.clip = responseClip;
+				collectibles += 1;
 			}
 		}
 	}
