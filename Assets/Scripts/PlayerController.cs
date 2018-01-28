@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour {
         rb = GetComponent<Rigidbody>();
     }
 
-    void Update () {
+    void Update () {        
         if (!digSystem.isEmitting) { isDigging = false; }
         if (!broadcastSystem.isEmitting) { isBroadcasting = false; }
 

@@ -7,6 +7,7 @@ public class CameraController : MonoBehaviour {
     public bool cinematicMode = true;
     public GameObject player;
     public Text titleText;
+    public Text score;
     private Vector3 offset;
 	private float initialY;
     private AudioSource theme;
@@ -45,12 +46,20 @@ public class CameraController : MonoBehaviour {
         cinematicMode = false;
         theme.Play();
         StartCoroutine(FadeTextToZeroAlpha(1f, titleText));
+        StartCoroutine(FadeTextToFullAlpha(1, score));
+    }
+
+    public IEnumerator FadeTextToFullAlpha(float t, Text i) {
+        i.color = new Color(i.color.r, i.color.g, i.color.b, 0);
+        while (i.color.a < 1.0f) {
+            i.color = new Color(i.color.r, i.color.g, i.color.b, i.color.a + (Time.deltaTime / t));
+            yield return null;
+        }
     }
 
     public IEnumerator FadeTextToZeroAlpha(float t, Text i) {
         i.color = new Color(i.color.r, i.color.g, i.color.b, 1);
-        while (i.color.a > 0.0f)
-        {
+        while (i.color.a > 0.0f) {
             i.color = new Color(i.color.r, i.color.g, i.color.b, i.color.a - (Time.deltaTime / t));
             yield return null;
         }
