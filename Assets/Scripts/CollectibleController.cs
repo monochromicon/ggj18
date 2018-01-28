@@ -38,7 +38,6 @@ public class CollectibleController : MonoBehaviour {
 
 	void OnCollisionStay(Collision collision) {
 		if (!collected && PlayerController.isDigging && collision.collider == player.GetComponent<SphereCollider>()) {
-			Debug.Log("Collected!");
 			collectibleSystem.Play();
 			Text score = GameObject.Find("Canvas/Score").GetComponent<Text>();
 			score.text = (PlayerController.collected + 1).ToString();

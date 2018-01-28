@@ -10,6 +10,8 @@ public class GroundController : MonoBehaviour {
 	public Material platformMaterial;
 	public ParticleSystem collectibleSystem;
 	public AudioClip responseClip;
+	public AudioClip getClip;
+	public AudioClip proximityClip;
 	public int collectibles;
 	private Vector3 lastJoint;
 
@@ -50,10 +52,20 @@ public class GroundController : MonoBehaviour {
 				collectible.transform.SetParent(platform.transform);
 				collectible.transform.position = platform.transform.position;
 				platform.AddComponent<CollectibleController>();
-				AudioSource platformAudio = platform.AddComponent<AudioSource>();
-				platformAudio.loop = false;
-				platformAudio.playOnAwake = false;
-				platformAudio.clip = responseClip;
+				AudioSource responseAudio = platform.AddComponent<AudioSource>();
+				responseAudio.loop = false;
+				responseAudio.playOnAwake = false;
+				responseAudio.clip = responseClip;
+				AudioSource proximityAudio = platform.AddComponent<AudioSource>();
+				proximityAudio.clip = proximityClip;
+				proximityAudio.spread = 1f;
+				proximityAudio.spatialBlend = 1f;
+				proximityAudio.rolloffMode = AudioRolloffMode.Logarithmic;
+				proximityAudio.maxDistance = 20f;
+				AudioSource getAudio = platform.AddComponent<AudioSource>();
+				getAudio.clip = getClip;
+				getAudio.playOnAwake = false;
+				getAudio.loop = false;
 				collectibles += 1;
 			}
 		}

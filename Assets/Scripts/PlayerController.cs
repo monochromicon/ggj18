@@ -9,11 +9,14 @@ public class PlayerController : MonoBehaviour {
     public AudioSource call;
     public AudioSource dig;
     public AudioSource move;
+    public AudioSource get;
 
     private Rigidbody rb;
+    private bool moving;
     static public bool isBroadcasting = false;
     static public bool isDigging = false;
     static public int collected = 0;
+    private int lastCollected = 0;
 
     void Start () {
         rb = GetComponent<Rigidbody>();
@@ -22,6 +25,11 @@ public class PlayerController : MonoBehaviour {
     void Update () {        
         if (!digSystem.isEmitting) { isDigging = false; }
         if (!broadcastSystem.isEmitting) { isBroadcasting = false; }
+
+        if (collected != lastCollected) {
+            get.Play();
+            lastCollected = collected;
+        }
 
         if (!isBroadcasting) {
             if (Input.GetKeyDown(KeyCode.UpArrow)) {
@@ -39,15 +47,16 @@ public class PlayerController : MonoBehaviour {
             }
         }
 
-        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow)) {
-            move.Play();
-        } else {
+        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow)) {
+            if (!moving) {
+                move.Play();
+                moving = true;
+            }
+        } 
+        if (Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.RightArrow)) {
             move.Stop();
+            moving = false;
         }
-    }
-
-    public void Dig () {
-
     }
 
     void FixedUpdate () {
@@ -58,11 +67,4 @@ public class PlayerController : MonoBehaviour {
         rb.AddForce (movement * speed);
     }
 
-    // void OnCollisionExit () {
-    //     falling = true;
-    // }
-
-    // void OnCollisionEnter () {
-    //     falling = false;
-    // }
 }
